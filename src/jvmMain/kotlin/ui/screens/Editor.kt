@@ -22,6 +22,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import ui.graph.Graph
 import ui.kit.Card
 
 @Composable
@@ -33,6 +34,9 @@ fun Editor(
     Box(
         modifier = Modifier.fillMaxSize()
     ){
+        Graph(
+            modifier = Modifier.fillMaxSize()
+        )
         Toolbox(
             modifier = Modifier
                 .padding(8.dp)
