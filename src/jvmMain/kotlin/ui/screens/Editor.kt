@@ -41,7 +41,9 @@ fun Editor(
             onClick = { viewModel.processUserEvent(EditorUserEvent.AddVertex(it)) },
             onCaptureVertex = { viewModel.processUserEvent(EditorUserEvent.CaptureVertex(it)) },
             onReleaseVertex = { viewModel.processUserEvent(EditorUserEvent.ReleaseVertex(it)) },
-            onVertexMove = { offset, index -> viewModel.processUserEvent(EditorUserEvent.MoveVertex(offset, index)) }
+            onVertexMove = { offset, index -> viewModel.processUserEvent(EditorUserEvent.MoveVertex(offset, index)) },
+            linkage = { state.currentLinkage },
+            onLinkageMove = { viewModel.processUserEvent(EditorUserEvent.MoveLinkage(it)) }
         )
         Toolbox(
             modifier = Modifier

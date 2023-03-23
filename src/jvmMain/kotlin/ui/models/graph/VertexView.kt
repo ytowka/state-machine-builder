@@ -4,7 +4,8 @@ import androidx.compose.ui.geometry.Offset
 
 data class VertexView(
     val name: String,
-    val pos: Offset
+    val pos: Offset,
+    val index: Int,
 ){
     fun checkIsIn(offset: Offset) : Boolean{
         return (

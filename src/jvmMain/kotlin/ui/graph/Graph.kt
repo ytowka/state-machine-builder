@@ -17,6 +17,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import ui.models.graph.GraphView
 import ui.models.graph.VertexView
+import ui.screens.Linkage
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -24,11 +25,12 @@ fun Graph(
     modifier: Modifier = Modifier,
     graphView: GraphView,
     captureVertexIndex: ()->Int?,
-    linkagePoint: Offset? = null,
+    linkage: ()->Linkage?,
     onClick: (Offset) -> Unit,
     onCaptureVertex: (Int) -> Unit,
     onReleaseVertex: (Int?) -> Unit,
-    onVertexMove: (offset: Offset, index: Int) -> Unit
+    onVertexMove: (offset: Offset, index: Int) -> Unit,
+    onLinkageMove: (Offset) -> Unit,
 ) {
     BoxWithConstraints {
         val windowSize = with(LocalDensity.current) {
@@ -61,7 +63,9 @@ fun Graph(
                 }
                 .pointerInput(Unit) {
                     detectDragGestures { change, dragAmount ->
-                        if(captureVertexIndex() != null){
+                        if(linkage() != null){
+                            with(viewport){ onLinkageMove(change.position.toViewportOffset()) }
+                        } else if(captureVertexIndex() != null ){
                             with(viewport){ onVertexMove(change.position.toViewportOffset(), captureVertexIndex()!!) }
                         }else{
                             viewport.translate(-dragAmount)
@@ -81,6 +85,14 @@ fun Graph(
                         color = Color.Red,
                         start = it.from.pos.toWindowOffset(),
                         end = it.to.pos.toWindowOffset(),
+                        strokeWidth = 5 / scale
+                    )
+                }
+                linkage()?.let {
+                    drawLine(
+                        color = Color.Red,
+                        start = it.from.pos.toWindowOffset(),
+                        end = it.to.toWindowOffset(),
                         strokeWidth = 5 / scale
                     )
                 }
