@@ -83,15 +83,15 @@ fun Graph(
                 graphView.arcs.forEach {
                     drawLine(
                         color = Color.Red,
-                        start = it.from.pos.value.toWindowOffset(),
-                        end = it.to.pos.value.toWindowOffset(),
+                        start = graphView.vertices[it.from].pos.toWindowOffset(),
+                        end = graphView.vertices[it.to].pos.toWindowOffset(),
                         strokeWidth = 5 / scale
                     )
                 }
                 linkage()?.let {
                     drawLine(
                         color = Color.Red,
-                        start = it.from.pos.value.toWindowOffset(),
+                        start = graphView.vertices[it.from].pos.toWindowOffset(),
                         end = it.to.toWindowOffset(),
                         strokeWidth = 5 / scale
                     )
@@ -100,7 +100,7 @@ fun Graph(
                     drawCircle(
                         color = Color.Black,
                         radius = VertexView.DEFAULT_SIZE / scale,
-                        center = it.pos.value.toWindowOffset(),
+                        center = it.pos.toWindowOffset(),
                     )
                 }
             }

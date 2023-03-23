@@ -3,7 +3,6 @@ package ui.screens
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.geometry.Offset
 import ui.models.graph.GraphView
-import ui.models.graph.VertexView
 
 @Immutable
 data class EditorState(
@@ -17,7 +16,7 @@ data class EditorState(
 }
 
 data class Linkage(
-    val from: VertexView,
+    val from: Int,
     val to: Offset,
 )
 

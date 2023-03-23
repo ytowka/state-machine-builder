@@ -1,6 +1,5 @@
 package ui.screens
 
-import androidx.compose.runtime.mutableStateOf
 import arch.ViewModel
 import kotlinx.coroutines.CoroutineScope
 import ui.models.graph.Arc
@@ -24,18 +23,17 @@ class EditorViewModel(coroutineScope: CoroutineScope) : ViewModel<EditorState, E
             is EditorUserEvent.AddVertex -> with(state){
                 copy(
                     graph = graph.copy(
-                        vertices = graph.vertices + listOf(VertexView("name", mutableStateOf(event.offset), graph.vertices.size))
+                        vertices = graph.vertices + listOf(VertexView("name", event.offset, graph.vertices.size))
                     )
                 )
             }
 
-            is EditorUserEvent.MoveVertex -> with(state){
-                graph.vertices.mapIndexed { index, vertex ->
-                    if(index == event.index){
-                        vertex.pos.value = event.offset
-                    }
-                }
-                this
+            is EditorUserEvent.MoveVertex -> with(state) {
+                copy(graph = graph.copy(vertices = graph.vertices.mapIndexed { index, vertex ->
+                    if (index == event.index) {
+                        vertex.copy(pos = event.offset)
+                    } else vertex
+                }))
             }
             is EditorUserEvent.MoveLinkage -> with(state){
                 if(currentLinkage != null){
@@ -50,7 +48,7 @@ class EditorViewModel(coroutineScope: CoroutineScope) : ViewModel<EditorState, E
                         capturedVertexIndex = event.index
                     )
                     EditorMode.ARCS -> copy(
-                        currentLinkage = Linkage(graph.vertices[event.index], graph.vertices[event.index].pos.value)
+                        currentLinkage = Linkage(event.index, graph.vertices[event.index].pos)
                     )
                 }
             }
@@ -62,11 +60,11 @@ class EditorViewModel(coroutineScope: CoroutineScope) : ViewModel<EditorState, E
                     )
                     EditorMode.ARCS -> {
                         if(currentLinkage != null){
-                            event.atIndex?.takeIf { graph.vertices[it] != currentLinkage.from }?.let {
+                            event.atIndex?.takeIf { it != currentLinkage.from }?.let {
                                 copy(
                                     currentLinkage = null,
                                     graph = graph.copy(
-                                        arcs = graph.arcs + Arc("", currentLinkage.from, graph.vertices[event.atIndex])
+                                        arcs = graph.arcs + Arc("", currentLinkage.from, event.atIndex)
                                     )
                                 )
                             }?: copy(currentLinkage = null)
