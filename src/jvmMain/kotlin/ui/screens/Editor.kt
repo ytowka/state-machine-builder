@@ -35,7 +35,13 @@ fun Editor(
         modifier = Modifier.fillMaxSize()
     ){
         Graph(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
+            graphView = state.graph,
+            captureVertexIndex = { state.capturedVertexIndex },
+            onClick = { viewModel.processUserEvent(EditorUserEvent.AddVertex(it)) },
+            onCaptureVertex = { viewModel.processUserEvent(EditorUserEvent.CaptureVertex(it)) },
+            onReleaseVertex = { viewModel.processUserEvent(EditorUserEvent.ReleaseVertex(it)) },
+            onVertexMove = { offset, index -> viewModel.processUserEvent(EditorUserEvent.MoveVertex(offset, index)) }
         )
         Toolbox(
             modifier = Modifier
