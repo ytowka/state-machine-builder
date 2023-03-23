@@ -7,8 +7,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Outline
+import androidx.compose.ui.graphics.drawOutline
 import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.input.pointer.PointerKeyboardModifiers
 import androidx.compose.ui.input.pointer.onPointerEvent
@@ -41,12 +44,15 @@ fun Graph(
                     }
                 },
         ) {
-           /* drawRect(
-                color = Color.Blue,
-                topLeft = center,
-                size = Size(this.size.width / 2 - 50, this.size.height / 2 - 50)
-            )*/
             with(viewport){
+                drawOutline(
+                    outline = Outline.Rectangle(Rect(
+                        Offset.Zero.toWindowOffset(),
+                        windowSize.toWindowSize()
+                    )),
+                    color = Color.Gray,
+                )
+
                 drawCircle(
                     color = Color.Red,
                     radius = 50f / scale,
